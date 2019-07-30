@@ -5,30 +5,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "orders")
 @AllArgsConstructor @NoArgsConstructor @Data
-public class Orders {
+public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
-    private User user;
-
-    @ManyToMany
-    private List<Item> items;
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false)
-    private String street;
+    private Double price;
 
     @Column(nullable = false)
-    private String postcode;
+    private String description;
+
+    private boolean sale = false;
+
+    private boolean outlet = false;
 
     @Column(nullable = false)
-    private String city;
-
+    private Long avaiability;
 }
