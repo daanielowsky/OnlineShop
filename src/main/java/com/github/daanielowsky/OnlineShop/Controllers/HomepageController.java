@@ -10,6 +10,6 @@ public class HomepageController {
     @GetMapping("/")
     @ResponseBody
     public String homepageScreen(){
-        return "HELLO TO MY WEBAPP";
+        return "HELLO TO MY WORKING WEBAPP";
     }
 }
