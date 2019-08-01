@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomepageController {
 
     @GetMapping("/")
-    @ResponseBody
     public String homepageScreen(){
-        return "HELLO TO MY WORKING WEBAPP";
+        return "homepage";
     }
 }
