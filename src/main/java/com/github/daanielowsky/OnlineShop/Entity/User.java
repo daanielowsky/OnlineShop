@@ -32,7 +32,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    private Long numberOfOrders;
+    private Long numberOfOrders = 0L;
 
     @OneToMany
     private List<Orders> Orders;
