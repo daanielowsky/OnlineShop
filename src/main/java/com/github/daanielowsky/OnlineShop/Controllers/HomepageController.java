@@ -11,4 +11,14 @@ public class HomepageController {
     public String homepageScreen(){
         return "homepage";
     }
+
+    @GetMapping("/login")
+    public String loginPage(){
+        return "loginpage";
+    }
+
+    @GetMapping("register")
+    public String registerPage(){
+        
+    }
 }

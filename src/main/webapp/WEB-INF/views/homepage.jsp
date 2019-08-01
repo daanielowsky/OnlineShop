@@ -3,8 +3,11 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="media/style.css">
 </head>
 <body>
-HELLO
+<div class="mid">
+<jsp:include page="header.jsp"/>
+</div>
 </body>
 </html>
