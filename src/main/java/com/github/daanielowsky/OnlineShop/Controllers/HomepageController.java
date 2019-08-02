@@ -1,6 +1,7 @@
 package com.github.daanielowsky.OnlineShop.Controllers;
 
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
+import com.github.daanielowsky.OnlineShop.Entity.User;
 import com.github.daanielowsky.OnlineShop.Services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,9 @@ public class HomepageController {
     }
 
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage(Model model){
+        User user = new User();
+        model.addAttribute("user", user);
         return "loginpage";
     }
 
@@ -52,6 +55,19 @@ public class HomepageController {
         userService.registerUser(form);
 
         return "homepage";
+    }
+
+    @ModelAttribute("userprofile")
+    public UserDTO userFirstNameForTopSide(){
+        User loggedUser = userService.getLoggedUser();
+        if (loggedUser != null) {
+            String firstname = loggedUser.getFirstname();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setFirstname(firstname);
+            return userDTO;
+        } else {
+            return null;
+        }
     }
 
     private boolean checkIsUsernameAvaiable(UserDTO form) {
