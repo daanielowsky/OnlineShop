@@ -29,4 +29,12 @@ public class Item {
 
     @Column(nullable = false)
     private Long avaiability;
+
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] file;
+
+    @Column(name = "image_type")
+    private String imageType;
 }

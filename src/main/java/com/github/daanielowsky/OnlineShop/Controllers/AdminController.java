@@ -1,25 +1,31 @@
 package com.github.daanielowsky.OnlineShop.Controllers;
 
 import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
+import com.github.daanielowsky.OnlineShop.DTO.ItemDTO;
+import com.github.daanielowsky.OnlineShop.Entity.Category;
+import com.github.daanielowsky.OnlineShop.Repository.CategoryRepository;
 import com.github.daanielowsky.OnlineShop.Services.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     private CategoryService categoryService;
+    private CategoryRepository categoryRepository;
+    private ItemsService itemsService;
 
-    public AdminController(CategoryService categoryService) {
+    public AdminController(CategoryService categoryService, CategoryRepository categoryRepository) {
         this.categoryService = categoryService;
+        this.categoryRepository = categoryRepository;
     }
 
 
@@ -36,5 +42,17 @@ public class AdminController {
         }
         categoryService.creatingCategory(form);
         return "redirect:/profile";
+    }
+
+    @GetMapping("/additems")
+    public String formForNewItems(Model model){
+        model.addAttribute("item", new ItemDTO());
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "additems";
+    }
+
+    @PostMapping("/additems")
+        public String creatingNewItem(@Valid @ModelAttribute("item") ItemDTO itemDTO, BindingResult result, @RequestParam MultipartFile offerImage) throws IOException {
+
     }
 }
