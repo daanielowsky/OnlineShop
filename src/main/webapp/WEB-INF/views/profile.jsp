@@ -15,8 +15,8 @@
     <p>Ilość zamówień: ${orders}</p>
     <button onclick="javascript:document.location.href='/profile/passwordchange'">Zmień hasło</button>
     <button onclick="javascript:document.location.href='/profile/edit'">Edytuj dane</button>
-    <button onclick="javascript:document.location.href='/addcategory'">Dodaj kategorię</button>
-    <button onclick="javascript:document.location.href='/additems'">Dodaj Przedmioty</button>
+    <button onclick="javascript:document.location.href='/admin/addcategory'">Dodaj kategorię</button>
+    <button onclick="javascript:document.location.href='/admin/additems'">Dodaj Przedmioty</button>
 
 </div>
 </body>

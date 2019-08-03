@@ -1,6 +1,8 @@
 package com.github.daanielowsky.OnlineShop.Services;
 
+import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
+import com.github.daanielowsky.OnlineShop.Entity.Category;
 import com.github.daanielowsky.OnlineShop.Entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -25,6 +27,12 @@ public class Converter {
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
         return user;
+    }
+
+    public static Category convertToCategory(CategoryDTO categorydto){
+        Category category = new Category();
+        category.setName(categorydto.getName());
+        return category;
     }
 
 }

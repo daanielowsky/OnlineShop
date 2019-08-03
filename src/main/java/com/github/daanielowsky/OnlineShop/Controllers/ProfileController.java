@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/profile")
 public class ProfileController {
 
     private UserService userService;
@@ -17,11 +19,21 @@ public class ProfileController {
         this.userService = userService;
     }
 
-    @GetMapping("/profile")
+    @GetMapping
     public String profileOptions(Model model){
         Long numberOfOrders = userService.getLoggedUser().getNumberOfOrders();
         model.addAttribute("orders", numberOfOrders);
         return "profile";
+    }
+
+    @GetMapping("/passwordchange")
+    public String changePasswordForm(){
+        return "passwordchange";
+    }
+
+    @GetMapping("/edit")
+    public String profileEditForm(){
+        return "profileedit";
     }
 
     @ModelAttribute("userprofile")
