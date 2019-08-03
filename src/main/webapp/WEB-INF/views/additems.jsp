@@ -11,15 +11,15 @@
 <div class="mid">
     <jsp:include page="header.jsp"/>
     Dodaj przedmiot:
-    <form:form method="post" modelAttribute="item">
-        <p>Nazwa: <form:input path="name"/></p>
-        <p>Opis: <form:input path="description"/></p>
-        <p>Dostępność: <form:input path="avaiability"/></p>
-        <p>Cena: <form:input path="price"/></p>
+    <form:form method="post" modelAttribute="item" enctype="multipart/form-data">
+        <p>Nazwa: <form:input path="name"/> <form:errors path="name"/> </p>
+        <p>Opis: <form:input path="description"/> <form:errors path="description"/> </p>
+        <p>Dostępność: <form:input path="avaiability"/> <form:errors path="avaiability"/> </p>
+        <p>Cena: <form:input path="price"/> <form:errors path="price"/> </p>
         <p>Kategoria:<br> <c:forEach items="${categories}" var="category">
             ${category.name}<form:radiobutton path="categoryName" value="${category.name}"/><br>
         </c:forEach></p>
-        <p>Zdjęcie:<br> <input type="file" name="image"/></p>
+        <p>Zdjęcie:<br> <input type="file" name="image"/><form:errors path="image"/> </p>
         <br>
         <form:button>Wyślij</form:button>
     </form:form>
