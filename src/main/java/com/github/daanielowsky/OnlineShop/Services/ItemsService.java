@@ -27,9 +27,9 @@ public class ItemsService {
         String categoryName = itemDTO.getCategoryName();
         Category itemsCategory = categoryRepository.getByName(categoryName);
         List<Item> itemsOfCategory = itemsCategory.getItems();
+        itemsRepository.save(item);
         itemsOfCategory.add(item);
         categoryRepository.save(itemsCategory);
-        itemsRepository.save(item);
     }
 
 }

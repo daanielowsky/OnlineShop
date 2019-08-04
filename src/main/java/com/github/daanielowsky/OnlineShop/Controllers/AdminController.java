@@ -52,13 +52,15 @@ public class AdminController {
     }
 
     @PostMapping("/additems")
-        public String creatingNewItem(@Valid @ModelAttribute("item") ItemDTO itemDTO, BindingResult result, @RequestParam MultipartFile image) throws IOException {
+        public String creatingNewItem(@Valid @ModelAttribute("item") ItemDTO itemDTO, BindingResult result, @RequestParam MultipartFile file) throws IOException {
         if(result.hasErrors()){
             return "/additems";
         }
-        itemDTO.setContentType(image.getContentType());
-        itemDTO.setImage(image.getBytes());
+        itemDTO.setContentType(file.getContentType());
+        itemDTO.setImage(file.getBytes());
         itemsService.creatingItem(itemDTO);
         return "redirect:/profile";
     }
+
+
 }
