@@ -1,6 +1,7 @@
 package com.github.daanielowsky.OnlineShop.Controllers;
 
 import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
+import com.github.daanielowsky.OnlineShop.DTO.ItemDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
 import com.github.daanielowsky.OnlineShop.Entity.User;
 import com.github.daanielowsky.OnlineShop.Services.CategoryService;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -60,6 +62,13 @@ public class HomepageController {
         userService.registerUser(form);
 
         return "homepage";
+    }
+
+    @GetMapping("/category/{name}")
+    public String showItemsFromCategory (@PathVariable String name, Model model){
+        List<ItemDTO> listOfItemsFromCategory = categoryService.getListOfItemsFromCategory(name);
+        model.addAttribute("itemsForList", listOfItemsFromCategory);
+        return "itemsOfCategory";
     }
 
     @ModelAttribute("userprofile")
