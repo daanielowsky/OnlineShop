@@ -2,10 +2,15 @@ package com.github.daanielowsky.OnlineShop.Controllers;
 
 import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
 import com.github.daanielowsky.OnlineShop.DTO.ItemDTO;
+import com.github.daanielowsky.OnlineShop.DTO.ResourceDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
 import com.github.daanielowsky.OnlineShop.Entity.User;
 import com.github.daanielowsky.OnlineShop.Services.CategoryService;
+import com.github.daanielowsky.OnlineShop.Services.ItemsService;
 import com.github.daanielowsky.OnlineShop.Services.UserService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,10 +27,12 @@ public class HomepageController {
 
     private UserService userService;
     private CategoryService categoryService;
+    private ItemsService itemsService;
 
-    public HomepageController(UserService userService, CategoryService categoryService) {
+    public HomepageController(UserService userService, CategoryService categoryService, ItemsService itemsService) {
         this.userService = userService;
         this.categoryService = categoryService;
+        this.itemsService = itemsService;
     }
 
     @GetMapping("/")
@@ -69,6 +76,16 @@ public class HomepageController {
         List<ItemDTO> listOfItemsFromCategory = categoryService.getListOfItemsFromCategory(name);
         model.addAttribute("itemsForList", listOfItemsFromCategory);
         return "itemsOfCategory";
+    }
+
+    @GetMapping("/items/{name}/image")
+    public ResponseEntity<Resource> getOfferImage(@PathVariable String name) {
+        ResourceDTO itemImage = itemsService.getItemImage(name);
+        if (itemImage.getResource() != null) {
+            return ResponseEntity.ok().contentType(MediaType.valueOf(itemImage.getContentType())).body(itemImage.getResource());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @ModelAttribute("userprofile")

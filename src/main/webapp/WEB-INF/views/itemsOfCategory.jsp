@@ -14,7 +14,11 @@
 <div class="mid">
     <jsp:include page="header.jsp"/>
     <c:forEach items="${itemsForList}" var="items">
-        <a href="/items/${items.name}">${items.name}</a><br>
+        <img class="image-list" src="/items/${items.name}/image"/>
+        <font size="6"><a href="/items/${items.name}">${items.name}</a></font><br>
+        <p><h4>Cena:</h4> ${items.price}</p>
+        <p><h4>Ilość dostępnych sztuk:</h4> ${items.avaiability}</p>
+        <p><h4>Opis:</h4></p>
         <small>${items.description}</small><br>
         <hr>
     </c:forEach>

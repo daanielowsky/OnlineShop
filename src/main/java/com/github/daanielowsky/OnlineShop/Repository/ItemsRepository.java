@@ -4,4 +4,6 @@ import com.github.daanielowsky.OnlineShop.Entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemsRepository extends JpaRepository <Item, Long> {
+
+    Item getByName(String name);
 }
