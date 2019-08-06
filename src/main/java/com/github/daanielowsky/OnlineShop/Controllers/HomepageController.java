@@ -1,7 +1,9 @@
 package com.github.daanielowsky.OnlineShop.Controllers;
 
+import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
 import com.github.daanielowsky.OnlineShop.Entity.User;
+import com.github.daanielowsky.OnlineShop.Services.CategoryService;
 import com.github.daanielowsky.OnlineShop.Services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +13,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class HomepageController {
 
     private UserService userService;
+    private CategoryService categoryService;
 
-    public HomepageController(UserService userService) {
+    public HomepageController(UserService userService, CategoryService categoryService) {
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/")
@@ -68,6 +73,11 @@ public class HomepageController {
         } else {
             return null;
         }
+    }
+
+    @ModelAttribute("categoriesDropdown")
+    public List<CategoryDTO> dropdownOfCategories(){
+        return categoryService.getListOfCategories();
     }
 
     private boolean checkIsUsernameAvaiable(UserDTO form) {
