@@ -1,5 +1,6 @@
 package com.github.daanielowsky.OnlineShop.Services;
 
+import com.github.daanielowsky.OnlineShop.DTO.PasswordChangeDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
 import com.github.daanielowsky.OnlineShop.Entity.User;
 import com.github.daanielowsky.OnlineShop.Repository.UserRepository;
@@ -43,6 +44,15 @@ public class UserService {
         loggedUser.setFirstname(userDTO.getFirstname());
         loggedUser.setSurname(userDTO.getSurname());
         loggedUser.setEmail(userDTO.getEmail());
+        userRepository.save(loggedUser);
+    }
+
+    public void changePassword(String password){
+        User loggedUser = getLoggedUser();
+        logger.info(loggedUser.toString());
+        String encodedPassword = passwordEncoder.encode(password);
+        loggedUser.setPassword(encodedPassword);
+        logger.info(loggedUser.toString());
         userRepository.save(loggedUser);
     }
 
