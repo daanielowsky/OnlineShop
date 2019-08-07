@@ -38,6 +38,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void editUser(UserDTO userDTO) {
+        User loggedUser = getLoggedUser();
+        loggedUser.setFirstname(userDTO.getFirstname());
+        loggedUser.setSurname(userDTO.getSurname());
+        loggedUser.setEmail(userDTO.getEmail());
+        userRepository.save(loggedUser);
+    }
+
     @Transactional
     public UserDTO findUser(String username) {
         if (username == null) {

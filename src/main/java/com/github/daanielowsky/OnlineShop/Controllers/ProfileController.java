@@ -1,22 +1,33 @@
 package com.github.daanielowsky.OnlineShop.Controllers;
 
+import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
+import com.github.daanielowsky.OnlineShop.DTO.UserEditDTO;
 import com.github.daanielowsky.OnlineShop.Entity.User;
+import com.github.daanielowsky.OnlineShop.Services.CategoryService;
 import com.github.daanielowsky.OnlineShop.Services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
 
     private UserService userService;
+    private CategoryService categoryService;
 
-    public ProfileController(UserService userService) {
+
+    public ProfileController(UserService userService, CategoryService categoryService) {
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
@@ -32,8 +43,22 @@ public class ProfileController {
     }
 
     @GetMapping("/edit")
-    public String profileEditForm(){
+    public String profileEditForm(Model model){
+        model.addAttribute("editUser", new UserEditDTO());
         return "profileedit";
+    }
+
+    @PostMapping("/edit")
+    public String editingprofile(@Valid @ModelAttribute("editUser") UserEditDTO form, BindingResult result){
+        if(result.hasErrors()){
+            return "profileedit";
+        }
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(form.getEmail());
+        userDTO.setFirstname(form.getFirstname());
+        userDTO.setSurname(form.getSurname());
+        userService.editUser(userDTO);
+        return "redirect:/profile";
     }
 
     @ModelAttribute("userprofile")
@@ -49,5 +74,10 @@ public class ProfileController {
         } else {
             return null;
         }
+    }
+
+    @ModelAttribute("categoriesDropdown")
+    public List<CategoryDTO> dropdownOfCategories(){
+        return categoryService.getListOfCategories();
     }
 }

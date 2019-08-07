@@ -2,9 +2,12 @@ package com.github.daanielowsky.OnlineShop.Controllers;
 
 import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
 import com.github.daanielowsky.OnlineShop.DTO.ItemDTO;
+import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
+import com.github.daanielowsky.OnlineShop.Entity.User;
 import com.github.daanielowsky.OnlineShop.Repository.CategoryRepository;
 import com.github.daanielowsky.OnlineShop.Services.CategoryService;
 import com.github.daanielowsky.OnlineShop.Services.ItemsService;
+import com.github.daanielowsky.OnlineShop.Services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -21,11 +25,13 @@ public class AdminController {
     private CategoryService categoryService;
     private CategoryRepository categoryRepository;
     private ItemsService itemsService;
+    private UserService userService;
 
-    public AdminController(CategoryService categoryService, CategoryRepository categoryRepository, ItemsService itemsService) {
+    public AdminController(CategoryService categoryService, CategoryRepository categoryRepository, ItemsService itemsService, UserService userService) {
         this.categoryService = categoryService;
         this.categoryRepository = categoryRepository;
         this.itemsService = itemsService;
+        this.userService = userService;
     }
 
 
@@ -60,6 +66,24 @@ public class AdminController {
         itemDTO.setImage(file.getBytes());
         itemsService.creatingItem(itemDTO);
         return "redirect:/profile";
+    }
+
+    @ModelAttribute("userprofile")
+    public UserDTO userFirstNameForTopSide(){
+        User loggedUser = userService.getLoggedUser();
+        if (loggedUser != null) {
+            String firstname = loggedUser.getFirstname();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setFirstname(firstname);
+            return userDTO;
+        } else {
+            return null;
+        }
+    }
+
+    @ModelAttribute("categoriesDropdown")
+    public List<CategoryDTO> dropdownOfCategories(){
+        return categoryService.getListOfCategories();
     }
 
 

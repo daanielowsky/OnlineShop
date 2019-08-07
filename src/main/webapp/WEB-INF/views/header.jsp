@@ -18,6 +18,7 @@
         </div>
     </sec:authorize>
 </div>
+<hr>
 <center>
     <a href="/"><img src="https://i.ibb.co/mBdg1X5/cooltext331901052392998.png"/></a><br>
     <hr>
