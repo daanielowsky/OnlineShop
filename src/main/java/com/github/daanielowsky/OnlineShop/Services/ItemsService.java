@@ -45,4 +45,10 @@ public class ItemsService {
         return resourceDTO;
     }
 
+    public ItemDTO getItemToShow(String name){
+        Item byName = itemsRepository.getByName(name);
+        ItemDTO itemDTO = convertToItemDTO(byName);
+        return itemDTO;
+    }
+
 }

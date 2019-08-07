@@ -7,3 +7,10 @@
     width: 100px;
     height: 100px;
 }
+.boxes {
+    font-weight: bold;
+    width: 40%;
+    height: 80%;
+    margin: 10px 50px;
+    display: inline-block;
+}

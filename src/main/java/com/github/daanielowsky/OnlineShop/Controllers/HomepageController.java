@@ -88,6 +88,13 @@ public class HomepageController {
         }
     }
 
+    @GetMapping("/items/{name}")
+    public String showItemFullDetails (@PathVariable String name, Model model){
+        ItemDTO itemToShow = itemsService.getItemToShow(name);
+        model.addAttribute("itemToShow", itemToShow);
+        return "itemview";
+    }
+
     @ModelAttribute("userprofile")
     public UserDTO userFirstNameForTopSide(){
         User loggedUser = userService.getLoggedUser();

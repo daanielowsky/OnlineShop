@@ -50,4 +50,15 @@ public class Converter {
 
     }
 
+    public static ItemDTO convertToItemDTO(Item item){
+        ItemDTO itemDTO = new ItemDTO();
+        itemDTO.setName(item.getName());
+        itemDTO.setDescription(item.getDescription());
+        itemDTO.setPrice(item.getPrice());
+        itemDTO.setAvaiability(item.getAvaiability());
+        itemDTO.setImage(item.getFile());
+        itemDTO.setContentType(item.getImageType());
+        return itemDTO;
+    }
+
 }
