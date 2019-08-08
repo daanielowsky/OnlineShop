@@ -13,8 +13,9 @@
 <body>
 <div class="mid">
     <jsp:include page="header.jsp"/>
+    <h3>Nowa Kategoria:</h3>
     <form:form method="post" modelAttribute="category">
-        <form:input path="name"/>
+        <form:input path="name" placeholder="Nazwa kategorii"/>
         <form:button>Zapisz</form:button>
     </form:form>
 </div>
