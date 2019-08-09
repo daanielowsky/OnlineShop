@@ -39,6 +39,9 @@ public class User {
 
     private LocalDate created;
 
+    @OneToOne
+    private ShoppingCart shoppingCart;
+
     @PrePersist
     public void prePersist(){
         created = LocalDate.now();
