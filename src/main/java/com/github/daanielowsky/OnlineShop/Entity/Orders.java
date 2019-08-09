@@ -22,6 +22,8 @@ public class Orders {
     @ManyToMany
     private List<Item> items;
 
+    private Long totalPrice;
+
     @Column(nullable = false)
     private String street;
 
