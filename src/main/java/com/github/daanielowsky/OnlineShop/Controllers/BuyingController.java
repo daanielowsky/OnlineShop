@@ -1,21 +1,19 @@
 package com.github.daanielowsky.OnlineShop.Controllers;
 
 import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
-import com.github.daanielowsky.OnlineShop.DTO.ItemDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
 import com.github.daanielowsky.OnlineShop.Entity.ShoppingCart;
 import com.github.daanielowsky.OnlineShop.Entity.User;
 import com.github.daanielowsky.OnlineShop.Services.CategoryService;
 import com.github.daanielowsky.OnlineShop.Services.ItemsService;
+import com.github.daanielowsky.OnlineShop.Services.ShoppingCartService;
 import com.github.daanielowsky.OnlineShop.Services.UserService;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import java.util.List;
 import java.util.Map;
 
@@ -25,17 +23,19 @@ public class BuyingController {
     private UserService userService;
     private CategoryService categoryService;
     private ItemsService itemsService;
+    private ShoppingCartService shoppingCartService;
 
-    public BuyingController(UserService userService, CategoryService categoryService, ItemsService itemsService) {
+    public BuyingController(UserService userService, CategoryService categoryService, ItemsService itemsService, ShoppingCartService shoppingCartService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.itemsService = itemsService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     @PostMapping("/items/{name}")
     public String addItemToShoppingCart(@PathVariable String name, @RequestParam("howMany") Long amount) {
         if (amount<=0){
-            return "redirect:/items/{name}";
+            return "itemview";
         }
         User loggedUser = userService.getLoggedUser();
         if (loggedUser.getShoppingCart() == null) {
@@ -52,8 +52,10 @@ public class BuyingController {
                 Long newAmount = amountItemsThatAreAlreadyInCart + amount;
                 itemsInCart.replace(name, amountItemsThatAreAlreadyInCart, newAmount);
             }
+            shoppingCartService.createSaveShoppingCart(shoppingCart);
         }
-        return "redirect:/items/{name}";
+
+        return "itemview";
 
     }
 
