@@ -3,11 +3,9 @@ package com.github.daanielowsky.OnlineShop.Controllers;
 import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
 import com.github.daanielowsky.OnlineShop.Entity.ShoppingCart;
+import com.github.daanielowsky.OnlineShop.Entity.ShoppingCartItems;
 import com.github.daanielowsky.OnlineShop.Entity.User;
-import com.github.daanielowsky.OnlineShop.Services.CategoryService;
-import com.github.daanielowsky.OnlineShop.Services.ItemsService;
-import com.github.daanielowsky.OnlineShop.Services.ShoppingCartService;
-import com.github.daanielowsky.OnlineShop.Services.UserService;
+import com.github.daanielowsky.OnlineShop.Services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class BuyingController {
@@ -24,38 +21,38 @@ public class BuyingController {
     private CategoryService categoryService;
     private ItemsService itemsService;
     private ShoppingCartService shoppingCartService;
+    private ShoppingCartItemsService shoppingCartItemsService;
 
-    public BuyingController(UserService userService, CategoryService categoryService, ItemsService itemsService, ShoppingCartService shoppingCartService) {
+    public BuyingController(UserService userService, CategoryService categoryService, ItemsService itemsService, ShoppingCartService shoppingCartService, ShoppingCartItemsService shoppingCartItemsService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.itemsService = itemsService;
         this.shoppingCartService = shoppingCartService;
+        this.shoppingCartItemsService = shoppingCartItemsService;
     }
 
     @PostMapping("/items/{name}")
     public String addItemToShoppingCart(@PathVariable String name, @RequestParam("howMany") Long amount) {
-        if (amount<=0){
+        if (amount <= 0) {
             return "itemview";
         }
         User loggedUser = userService.getLoggedUser();
         if (loggedUser.getShoppingCart() == null) {
-            ShoppingCart shoppingCart = new ShoppingCart();
-            loggedUser.setShoppingCart(shoppingCart);
-            shoppingCart.setUser(loggedUser);
+            shoppingCartService.createSaveShoppingCart();
+            shoppingCartItemsService.addingNewItemToShoppingCart(name, amount);
         } else {
             ShoppingCart shoppingCart = loggedUser.getShoppingCart();
-            Map<String, Long> itemsInCart = shoppingCart.getItemsInCart();
-            if (!itemsInCart.containsKey(name)) {
-                itemsInCart.put(name, amount);
-            } else {
-                Long amountItemsThatAreAlreadyInCart = itemsInCart.get(name);
-                Long newAmount = amountItemsThatAreAlreadyInCart + amount;
-                itemsInCart.replace(name, amountItemsThatAreAlreadyInCart, newAmount);
+            for (ShoppingCartItems shoppingCartItems : shoppingCart.getShoppingCartItemsList()) {
+                String nameOfSingleItem = shoppingCartItems.getItem().getName();
+                if (nameOfSingleItem == name) {
+                    Long quantity = shoppingCartItems.getQuantity();
+                    shoppingCartItems.setQuantity(quantity + amount);
+                } else {
+                    shoppingCartItemsService.addingNewItemToShoppingCart(name, amount);
+                }
             }
-            shoppingCartService.createSaveShoppingCart(shoppingCart);
         }
-
-        return "itemview";
+        return "redirect:/items/" + name;
 
     }
 
