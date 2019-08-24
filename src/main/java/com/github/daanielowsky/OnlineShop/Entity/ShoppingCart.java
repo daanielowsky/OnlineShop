@@ -18,7 +18,7 @@ public class ShoppingCart {
     private Long id;
 
     @ElementCollection
-    private List<ShoppingCartItems> shoppingCartItemsList;
+    private List<Item> shoppingCartItemsList;
 
     @OneToOne
     private User user;

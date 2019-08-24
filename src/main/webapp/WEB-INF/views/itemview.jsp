@@ -23,7 +23,6 @@
             <h4>Ilość dostępnych sztuk:</h4>
             ${itemToShow.avaiability}
             <form method="post">
-                <input name="howMany" type="number">
                 <button name="${itemToShow.name}">Dodaj do koszyka</button>
             </form>
         </div>
