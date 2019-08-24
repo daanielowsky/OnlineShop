@@ -2,6 +2,7 @@ package com.github.daanielowsky.OnlineShop.Services;
 
 import com.github.daanielowsky.OnlineShop.DTO.PasswordChangeDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
+import com.github.daanielowsky.OnlineShop.Entity.ShoppingCart;
 import com.github.daanielowsky.OnlineShop.Entity.User;
 import com.github.daanielowsky.OnlineShop.Repository.UserRepository;
 import org.slf4j.Logger;
@@ -54,6 +55,10 @@ public class UserService {
         loggedUser.setPassword(encodedPassword);
         logger.info(loggedUser.toString());
         userRepository.save(loggedUser);
+    }
+
+    public void saveCartForUser(ShoppingCart shoppingCart){
+        getLoggedUser().setShoppingCart(shoppingCart);
     }
 
     @Transactional

@@ -17,7 +17,7 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Item> shoppingCartItemsList;
 
     @OneToOne

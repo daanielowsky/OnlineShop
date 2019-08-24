@@ -17,11 +17,15 @@ public class ShoppingCartService {
     }
 
 
-    public void createSaveShoppingCart(){
+    public void createShoppingCart(){
         ShoppingCart shoppingCart = new ShoppingCart();
         User loggedUser = userService.getLoggedUser();
         loggedUser.setShoppingCart(shoppingCart);
         shoppingCart.setUser(loggedUser);
+        shoppingCartRepository.save(shoppingCart);
+    }
+
+    public void savingShoppingCart(ShoppingCart shoppingCart){
         shoppingCartRepository.save(shoppingCart);
     }
 }

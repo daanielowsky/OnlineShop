@@ -1,16 +1,16 @@
 package com.github.daanielowsky.OnlineShop.Controllers;
 
 import com.github.daanielowsky.OnlineShop.DTO.CategoryDTO;
+import com.github.daanielowsky.OnlineShop.DTO.ItemDTO;
 import com.github.daanielowsky.OnlineShop.DTO.UserDTO;
+import com.github.daanielowsky.OnlineShop.Entity.Item;
 import com.github.daanielowsky.OnlineShop.Entity.ShoppingCart;
-import com.github.daanielowsky.OnlineShop.Entity.ShoppingCartItems;
 import com.github.daanielowsky.OnlineShop.Entity.User;
 import com.github.daanielowsky.OnlineShop.Services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -21,37 +21,26 @@ public class BuyingController {
     private CategoryService categoryService;
     private ItemsService itemsService;
     private ShoppingCartService shoppingCartService;
-    private ShoppingCartItemsService shoppingCartItemsService;
 
-    public BuyingController(UserService userService, CategoryService categoryService, ItemsService itemsService, ShoppingCartService shoppingCartService, ShoppingCartItemsService shoppingCartItemsService) {
+    public BuyingController(UserService userService, CategoryService categoryService, ItemsService itemsService, ShoppingCartService shoppingCartService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.itemsService = itemsService;
         this.shoppingCartService = shoppingCartService;
-        this.shoppingCartItemsService = shoppingCartItemsService;
     }
 
     @PostMapping("/items/{name}")
-    public String addItemToShoppingCart(@PathVariable String name, @RequestParam("howMany") Long amount) {
-        if (amount <= 0) {
-            return "itemview";
-        }
+    public String addItemToShoppingCart(@PathVariable String name) {
         User loggedUser = userService.getLoggedUser();
         if (loggedUser.getShoppingCart() == null) {
-            shoppingCartService.createSaveShoppingCart();
-            shoppingCartItemsService.addingNewItemToShoppingCart(name, amount);
-        } else {
-            ShoppingCart shoppingCart = loggedUser.getShoppingCart();
-            for (ShoppingCartItems shoppingCartItems : shoppingCart.getShoppingCartItemsList()) {
-                String nameOfSingleItem = shoppingCartItems.getItem().getName();
-                if (nameOfSingleItem == name) {
-                    Long quantity = shoppingCartItems.getQuantity();
-                    shoppingCartItems.setQuantity(quantity + amount);
-                } else {
-                    shoppingCartItemsService.addingNewItemToShoppingCart(name, amount);
-                }
-            }
+            shoppingCartService.createShoppingCart();
         }
+        ShoppingCart shoppingCart = loggedUser.getShoppingCart();
+        List<Item> shoppingCartItemsList = shoppingCart.getShoppingCartItemsList();
+        ItemDTO itemToShow = itemsService.getItemToShow(name);
+        shoppingCartItemsList.add(itemsService.getItemFromDTO(itemToShow));
+        shoppingCartService.savingShoppingCart(shoppingCart);
+        userService.saveCartForUser(shoppingCart);
         return "redirect:/items/" + name;
 
     }

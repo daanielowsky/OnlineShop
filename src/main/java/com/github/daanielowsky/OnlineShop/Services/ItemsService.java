@@ -51,4 +51,9 @@ public class ItemsService {
         return itemDTO;
     }
 
+    public Item getItemFromDTO(ItemDTO itemDTO){
+        Item byName = itemsRepository.getByName(itemDTO.getName());
+        return byName;
+    }
+
 }
